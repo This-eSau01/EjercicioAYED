@@ -85,7 +85,7 @@ public class SeleccionPaquetes {
         for (Paquete<?> p : seleccionados) {
             System.out.println(p);
             pesoTotal += p.getPeso();
-            valorizacionTotal += p.getValorizacion();
+            valorizacionTotal += p.getValor();
         }
 
         System.out.println("Peso total: " + pesoTotal);
