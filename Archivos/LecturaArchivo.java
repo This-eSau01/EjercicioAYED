@@ -47,7 +47,7 @@ public class LecturaArchivo {
                     int pos4 = linea.indexOf(",", pos3 + 1);
 
                     String codigo = linea.substring(0, pos1);
-                    int peso = Integer.parseInt(linea.substring(pos1 + 1, pos2));
+                    double peso = Double.parseDouble(linea.substring(pos1 + 1, pos2));
                     String prioridad = linea.substring(pos2 + 1, pos3);
                     int valor = Integer.parseInt(linea.substring(pos3 + 1, pos4));
                     int zona = Integer.parseInt(linea.substring(pos4 + 1));
