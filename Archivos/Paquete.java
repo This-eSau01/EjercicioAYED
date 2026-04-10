@@ -1,5 +1,5 @@
 public class Paquete <T>{
-    public int codigo;
+    public String codigo;
     public double peso;
     public T prioridad;
     public int valor;
