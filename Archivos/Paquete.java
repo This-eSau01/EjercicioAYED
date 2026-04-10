@@ -3,9 +3,9 @@ public class Paquete <T>{
     public double peso;
     public T prioridad;
     public int valor;
-    public String zona;
+    public int zona;
 
-    public Paquete(String codigo, double peso, T prioridad, int valor, String zona) {
+    public Paquete(String codigo, double peso, T prioridad, int valor, int zona) {
         this.codigo = codigo;
         this.peso = peso;
         this.prioridad = prioridad;
@@ -28,7 +28,7 @@ public class Paquete <T>{
     public int getValor() {
         return valor;
     }
-    public String getZona() {
+    public int getZona() {
         return zona;
     }
 
@@ -45,7 +45,7 @@ public class Paquete <T>{
     public void setValor(int valor) {
         this.valor = valor;
     }
-    public void setZona(String zona) {
+    public void setZona(int zona) {
         this.zona = zona;
     }
     @Override
