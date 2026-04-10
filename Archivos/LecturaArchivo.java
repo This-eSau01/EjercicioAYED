@@ -1,74 +1,34 @@
 import java.io.File;
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class LecturaArchivo {
 
-    public static void main(String[] args) {
+    public static ArrayList<Paquete<String>> leer(String ruta) {
 
-        String ruta = "paquete.txt";
+        ArrayList<Paquete<String>> lista = new ArrayList<>();
 
         try {
-            File archivo = new File(ruta);
-            Scanner sc = new Scanner(archivo);
-
-            String linea;
-
-            int capacidad = 0;
-            int zonas = 0;
-            int paquetes = 0;
-
+            Scanner sc = new Scanner(new File(ruta));
             while (sc.hasNextLine()) {
+                String linea = sc.nextLine();
+                if (linea.contains(",") && !linea.contains("Codigo")) {
 
-                linea = sc.nextLine();
-
-                if (linea.contains("CAPACIDAD")) {
-                    int pos = linea.indexOf("=");
-                    capacidad = Integer.parseInt(linea.substring(pos + 1));
-                }
-
-                else if (linea.contains("ZONAS")) {
-                    int pos = linea.indexOf("=");
-                    zonas = Integer.parseInt(linea.substring(pos + 1));
-                }
-
-                else if (linea.contains("PAQUETES_POR_ZONA")) {
-                    int pos = linea.indexOf("=");
-                    paquetes = Integer.parseInt(linea.substring(pos + 1));
-                }
-
-                else if (linea.contains(",")) {
-
-                    if (linea.contains("Codigo")) continue;
-
-                    int pos1 = linea.indexOf(",");
-                    int pos2 = linea.indexOf(",", pos1 + 1);
-                    int pos3 = linea.indexOf(",", pos2 + 1);
-                    int pos4 = linea.indexOf(",", pos3 + 1);
-
-                    String codigo = linea.substring(0, pos1);
-                    double peso = Double.parseDouble(linea.substring(pos1 + 1, pos2));
-                    String prioridad = linea.substring(pos2 + 1, pos3);
-                    int valor = Integer.parseInt(linea.substring(pos3 + 1, pos4));
-                    int zona = Integer.parseInt(linea.substring(pos4 + 1));
-
-                    System.out.println("Paquete: " + codigo);
-                    System.out.println("Peso: " + peso);
-                    System.out.println("Prioridad: " + prioridad);
-                    System.out.println("Valor: " + valor);
-                    System.out.println("Zona: " + zona);
-                    System.out.println();
+                    String[] datos = linea.split(",");
+                    String codigo = datos[0];
+                    double peso = Double.parseDouble(datos[1]);
+                    String prioridad = datos[2];
+                    int valor = Integer.parseInt(datos[3]);
+                    int zona = Integer.parseInt(datos[4]);
+                    lista.add(new Paquete<>(codigo, peso, prioridad, valor, zona));
                 }
             }
 
             sc.close();
 
-            System.out.println("Capacidad: " + capacidad);
-            System.out.println("Zonas: " + zonas);
-            System.out.println("Paquetes por zona: " + paquetes);
-
-        } catch (IOException e) {
-            System.out.println("errro");
+        } catch (Exception e) {
+            System.out.println("Error leyendo archivo");
         }
+        return lista;
     }
 }
