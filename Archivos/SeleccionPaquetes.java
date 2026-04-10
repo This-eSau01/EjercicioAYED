@@ -2,93 +2,61 @@ import java.util.ArrayList;
 
 public class SeleccionPaquetes {
 
-    public static int seleccionarRecursivo(Paquete<?>[] paquetes, int capacidad) {
-        return mochilaRecursiva(paquetes, paquetes.length, capacidad);
-    }
-
-    private static int mochilaRecursiva(Paquete<?>[] paquetes, int n, int capacidad) {
-        if (n == 0 || capacidad == 0) {
-            return 0;
-        }
-
-        Paquete<?> actual = paquetes[n - 1];
-
-        if (actual.getPeso() > capacidad) {
-            return mochilaRecursiva(paquetes, n - 1, capacidad);
-        } else {
-            int incluir = actual.getValor()
-                    + mochilaRecursiva(paquetes, n - 1, capacidad - actual.getPeso());
-
-            int noIncluir = mochilaRecursiva(paquetes, n - 1, capacidad);
-
-            return Math.max(incluir, noIncluir);
-        }
-    }
-
     public static int seleccionarDP(Paquete<?>[] paquetes, int capacidad) {
+
         int n = paquetes.length;
         int[][] dp = new int[n + 1][capacidad + 1];
-
         for (int i = 1; i <= n; i++) {
             Paquete<?> actual = paquetes[i - 1];
-
-            for (int c = 0; c <= capacidad; c++) {
-                if (actual.getPeso() > c) {
-                    dp[i][c] = dp[i - 1][c];
+            for (int w = 0; w <= capacidad; w++) {
+                if ((int) actual.getPeso() <= w) {
+                    dp[i][w] = Math.max(
+                            dp[i - 1][w],
+                            dp[i - 1][w - (int) actual.getPeso()] + actual.getValor()
+                    );
                 } else {
-                    int incluir = actual.getValor() + dp[i - 1][c - actual.getPeso()];
-                    int noIncluir = dp[i - 1][c];
-                    dp[i][c] = Math.max(incluir, noIncluir);
+                    dp[i][w] = dp[i - 1][w];
                 }
             }
         }
-
         return dp[n][capacidad];
     }
-
+    
     public static ArrayList<Paquete<?>> obtenerSeleccionDP(Paquete<?>[] paquetes, int capacidad) {
         int n = paquetes.length;
         int[][] dp = new int[n + 1][capacidad + 1];
-
         for (int i = 1; i <= n; i++) {
             Paquete<?> actual = paquetes[i - 1];
+            for (int w = 0; w <= capacidad; w++) {
+                if ((int) actual.getPeso() <= w) {
 
-            for (int c = 0; c <= capacidad; c++) {
-                if (actual.getPeso() > c) {
-                    dp[i][c] = dp[i - 1][c];
+                    dp[i][w] = Math.max(
+                            dp[i - 1][w],
+                            dp[i - 1][w - (int) actual.getPeso()] + actual.getValor()
+                    );
                 } else {
-                    int incluir = actual.getValor() + dp[i - 1][c - actual.getPeso()];
-                    int noIncluir = dp[i - 1][c];
-                    dp[i][c] = Math.max(incluir, noIncluir);
+                    dp[i][w] = dp[i - 1][w];
                 }
             }
         }
-
-        ArrayList<Paquete<?>> seleccionados = new ArrayList<>();
-        int c = capacidad;
-
+        ArrayList<Paquete<?>> seleccion = new ArrayList<>();
+        int w = capacidad;
         for (int i = n; i > 0; i--) {
-            if (dp[i][c] != dp[i - 1][c]) {
-                seleccionados.add(paquetes[i - 1]);
-                c -= paquetes[i - 1].getPeso();
+            if (dp[i][w] != dp[i - 1][w]) {
+                Paquete<?> p = paquetes[i - 1];
+                seleccion.add(p);
+                w -= (int) p.getPeso();
             }
         }
 
-        return seleccionados;
+        return seleccion;
     }
-
-    public static void mostrarSeleccion(ArrayList<Paquete<?>> seleccionados) {
-        int pesoTotal = 0;
+    public static void mostrarSeleccion(ArrayList<Paquete<?>> seleccion) {
         int valorizacionTotal = 0;
-
-        System.out.println(" PAQUETES SELECCIONADOS ");
-        for (Paquete<?> p : seleccionados) {
+        for (Paquete<?> p : seleccion) {
             System.out.println(p);
-            pesoTotal += p.getPeso();
             valorizacionTotal += p.getValor();
         }
-
-        System.out.println("Peso total: " + pesoTotal);
-        System.out.println("Valor total: " + valorTotal);
+        System.out.println("Valor total: " + valorizacionTotal);
     }
 }
