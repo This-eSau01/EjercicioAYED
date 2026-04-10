@@ -1,6 +1,6 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.File;
 import java.io.IOException;
+import java.util.Scanner;
 
 public class LecturaArchivo {
 
@@ -9,31 +9,32 @@ public class LecturaArchivo {
         String ruta = "paquete.txt";
 
         try {
-            BufferedReader br = new BufferedReader(new FileReader(ruta));
+            File archivo = new File(ruta);
+            Scanner sc = new Scanner(archivo);
+
             String linea;
 
             int capacidad = 0;
             int zonas = 0;
             int paquetes = 0;
 
-            while ((linea = br.readLine()) != null) {
+            while (sc.hasNextLine()) {
+
+                linea = sc.nextLine();
 
                 if (linea.contains("CAPACIDAD")) {
                     int pos = linea.indexOf("=");
-                    String num = linea.substring(pos + 1);
-                    capacidad = Integer.parseInt(num);
+                    capacidad = Integer.parseInt(linea.substring(pos + 1));
                 }
 
                 else if (linea.contains("ZONAS")) {
                     int pos = linea.indexOf("=");
-                    String num = linea.substring(pos + 1);
-                    zonas = Integer.parseInt(num);
+                    zonas = Integer.parseInt(linea.substring(pos + 1));
                 }
 
                 else if (linea.contains("PAQUETES_POR_ZONA")) {
                     int pos = linea.indexOf("=");
-                    String num = linea.substring(pos + 1);
-                    paquetes = Integer.parseInt(num);
+                    paquetes = Integer.parseInt(linea.substring(pos + 1));
                 }
 
                 else if (linea.contains(",")) {
@@ -57,18 +58,17 @@ public class LecturaArchivo {
                     System.out.println("Valor: " + valor);
                     System.out.println("Zona: " + zona);
                     System.out.println();
-                    
                 }
             }
 
-            br.close();
+            sc.close();
 
             System.out.println("Capacidad: " + capacidad);
             System.out.println("Zonas: " + zonas);
             System.out.println("Paquetes por zona: " + paquetes);
 
         } catch (IOException e) {
-            System.out.println("Error");
+            System.out.println("errro");
         }
     }
 }
