@@ -16,7 +16,7 @@ public class SeleccionPaquetes {
         if (actual.getPeso() > capacidad) {
             return mochilaRecursiva(paquetes, n - 1, capacidad);
         } else {
-            int incluir = actual.getValorizacion()
+            int incluir = actual.getValor()
                     + mochilaRecursiva(paquetes, n - 1, capacidad - actual.getPeso());
 
             int noIncluir = mochilaRecursiva(paquetes, n - 1, capacidad);
@@ -36,7 +36,7 @@ public class SeleccionPaquetes {
                 if (actual.getPeso() > c) {
                     dp[i][c] = dp[i - 1][c];
                 } else {
-                    int incluir = actual.getValorizacion() + dp[i - 1][c - actual.getPeso()];
+                    int incluir = actual.getValor() + dp[i - 1][c - actual.getPeso()];
                     int noIncluir = dp[i - 1][c];
                     dp[i][c] = Math.max(incluir, noIncluir);
                 }
@@ -57,7 +57,7 @@ public class SeleccionPaquetes {
                 if (actual.getPeso() > c) {
                     dp[i][c] = dp[i - 1][c];
                 } else {
-                    int incluir = actual.getValorizacion() + dp[i - 1][c - actual.getPeso()];
+                    int incluir = actual.getValor() + dp[i - 1][c - actual.getPeso()];
                     int noIncluir = dp[i - 1][c];
                     dp[i][c] = Math.max(incluir, noIncluir);
                 }
@@ -89,6 +89,6 @@ public class SeleccionPaquetes {
         }
 
         System.out.println("Peso total: " + pesoTotal);
-        System.out.println("Valorizacion total: " + valorizacionTotal);
+        System.out.println("Valor total: " + valorTotal);
     }
 }
